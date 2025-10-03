@@ -1241,8 +1241,16 @@
             currentTokenInfo = null;
             
             try {
-                // Buscar portfolio da carteira primeiro
+                // Buscar portfolio da carteira primeiro - SEMPRE
                 addDebugInfo('💼 Carregando portfolio da carteira...', null, 'info');
+                
+                // Forçar exibição do portfolio card
+                const portfolioCard = document.getElementById('portfolioCard');
+                if (portfolioCard) {
+                    portfolioCard.classList.remove('hidden');
+                    addDebugInfo('📋 Portfolio card exibido', null, 'info');
+                }
+                
                 await fetchWalletPortfolio();
 
                 // Se há endereço de token, buscar suas informações primeiro
@@ -1611,30 +1619,43 @@
 
             addDebugInfo('💼 Iniciando análise de portfolio...', { wallet: walletAddress.substring(0, 10) + '...' }, 'info');
             
+            // Limpar portfolio anterior
+            currentPortfolio = [];
+            portfolioTotalValue = 0;
+            
             try {
-                // Mostrar loading
-                document.getElementById('portfolioCard').classList.remove('hidden');
+                // Mostrar card de portfolio
+                const portfolioCard = document.getElementById('portfolioCard');
+                if (portfolioCard) {
+                    portfolioCard.classList.remove('hidden');
+                }
                 
-                // Buscar saldo nativo da rede
+                // Buscar saldo nativo da rede SEMPRE
+                addDebugInfo('🔍 Buscando saldo nativo...', null, 'info');
                 await fetchNativeBalance(walletAddress, networkKey);
                 
                 // Buscar todos os tokens ERC-20/BEP-20
+                addDebugInfo('🔍 Buscando tokens da carteira...', null, 'info');
                 await fetchTokenBalances(walletAddress, networkKey);
                 
                 // Buscar preços em USD
+                addDebugInfo('💲 Atualizando preços USD...', null, 'info');
                 await fetchTokenPrices();
                 
-                // Calcular e exibir portfolio
+                // Calcular e exibir portfolio SEMPRE (mesmo se vazio)
                 calculatePortfolioValue();
                 displayPortfolio();
                 
                 addDebugInfo('✅ Portfolio carregado com sucesso', { 
                     tokens: currentPortfolio.length,
-                    totalValue: portfolioTotalValue 
+                    totalValue: `$${portfolioTotalValue.toFixed(2)}`
                 }, 'success');
                 
             } catch (error) {
                 addDebugInfo('❌ Erro ao carregar portfolio', { error: error.message }, 'error');
+                // Mesmo com erro, mostrar o que conseguiu carregar
+                calculatePortfolioValue();
+                displayPortfolio();
             }
         }
 
@@ -1643,33 +1664,71 @@
             const chainId = CHAIN_CONFIG[networkKey].chainId;
             const url = `https://api.etherscan.io/v2/api?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=${API_KEY}&chainid=${chainId}`;
             
+            addDebugInfo('🌐 Consultando API para saldo nativo', { 
+                network: CHAIN_CONFIG[networkKey].name,
+                chainId: chainId 
+            }, 'info');
+            
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 
+                addDebugInfo('📡 Resposta da API recebida', { 
+                    status: data.status,
+                    hasResult: !!data.result 
+                }, 'info');
+                
                 if (data.status === '1' && data.result) {
                     const balance = parseFloat(data.result) / Math.pow(10, 18);
                     
-                    if (balance > 0) {
-                        currentPortfolio.push({
-                            name: CHAIN_CONFIG[networkKey].name,
-                            symbol: CHAIN_CONFIG[networkKey].symbol,
-                            balance: balance,
-                            contractAddress: 'native',
-                            decimals: 18,
-                            priceUSD: 0, // Será preenchido depois
-                            valueUSD: 0,
-                            isNative: true
-                        });
-                        
-                        addDebugInfo('💰 Saldo nativo encontrado', { 
-                            symbol: CHAIN_CONFIG[networkKey].symbol,
-                            balance: balance.toFixed(6)
-                        }, 'token');
-                    }
+                    // Adicionar ao portfolio SEMPRE, mesmo se saldo for 0
+                    currentPortfolio.push({
+                        name: CHAIN_CONFIG[networkKey].name,
+                        symbol: CHAIN_CONFIG[networkKey].symbol,
+                        balance: balance,
+                        contractAddress: 'native',
+                        decimals: 18,
+                        priceUSD: 0, // Será preenchido depois
+                        valueUSD: 0,
+                        isNative: true
+                    });
+                    
+                    addDebugInfo('💰 Saldo nativo adicionado', { 
+                        symbol: CHAIN_CONFIG[networkKey].symbol,
+                        balance: balance.toFixed(6)
+                    }, 'token');
+                } else {
+                    addDebugInfo('⚠️ API retornou erro ou sem resultado', { 
+                        status: data.status,
+                        message: data.message || 'Sem dados'
+                    }, 'warning');
+                    
+                    // Adicionar com saldo 0 para mostrar a rede
+                    currentPortfolio.push({
+                        name: CHAIN_CONFIG[networkKey].name,
+                        symbol: CHAIN_CONFIG[networkKey].symbol,
+                        balance: 0,
+                        contractAddress: 'native',
+                        decimals: 18,
+                        priceUSD: 0,
+                        valueUSD: 0,
+                        isNative: true
+                    });
                 }
             } catch (error) {
-                addDebugInfo('⚠️ Erro ao buscar saldo nativo', { error: error.message }, 'warning');
+                addDebugInfo('❌ Erro na requisição de saldo nativo', { error: error.message }, 'error');
+                
+                // Adicionar com saldo 0 mesmo com erro
+                currentPortfolio.push({
+                    name: CHAIN_CONFIG[networkKey].name,
+                    symbol: CHAIN_CONFIG[networkKey].symbol,
+                    balance: 0,
+                    contractAddress: 'native',
+                    decimals: 18,
+                    priceUSD: 0,
+                    valueUSD: 0,
+                    isNative: true
+                });
             }
         }
 
@@ -1748,27 +1807,62 @@
 
         // Função para buscar preços em USD (simulado - em produção usar API de preços)
         async function fetchTokenPrices() {
-            // Preços simulados para demonstração
+            // Preços atualizados para demonstração (baseados em preços reais)
             const mockPrices = {
-                'ETH': 2500,
-                'BNB': 300,
-                'MATIC': 0.8,
-                'AVAX': 25,
-                'USDT': 1,
-                'USDC': 1,
-                'BUSD': 1,
-                'GEGG': 0.001,
-                'PEPE': 0.000001
+                'ETH': 2650,
+                'BNB': 315,
+                'MATIC': 0.85,
+                'AVAX': 28,
+                'ARB': 0.95,
+                'OP': 1.85,
+                'BASE': 1.2,
+                'BLAST': 0.02,
+                'SCROLL': 0.75,
+                'ZK': 0.15,
+                'LINEA': 0.45,
+                'MNT': 0.65,
+                'USDT': 1.00,
+                'USDC': 1.00,
+                'BUSD': 1.00,
+                'DAI': 1.00,
+                'GEGG': 0.0015,
+                'PEPE': 0.00000125,
+                'SHIB': 0.000025,
+                'DOGE': 0.12,
+                'LINK': 15.50,
+                'UNI': 8.75,
+                'AAVE': 185,
+                'COMP': 65,
+                'SUSHI': 1.25,
+                'CRV': 0.85,
+                'YFI': 8500,
+                'SNX': 2.85,
+                'MKR': 1850,
+                'WBTC': 67500,
+                'WETH': 2650
             };
             
+            let pricesFound = 0;
+            
             currentPortfolio.forEach(token => {
-                token.priceUSD = mockPrices[token.symbol] || 0;
+                const price = mockPrices[token.symbol] || mockPrices[token.symbol.toUpperCase()] || 0;
+                token.priceUSD = price;
                 token.valueUSD = token.balance * token.priceUSD;
+                
+                if (price > 0) {
+                    pricesFound++;
+                    addDebugInfo(`💰 Preço encontrado: ${token.symbol}`, { 
+                        price: `$${price}`,
+                        balance: token.balance.toFixed(6),
+                        value: `$${token.valueUSD.toFixed(2)}`
+                    }, 'token');
+                }
             });
             
             addDebugInfo('💲 Preços atualizados', { 
                 tokens: currentPortfolio.length,
-                pricesFound: currentPortfolio.filter(t => t.priceUSD > 0).length
+                pricesFound: pricesFound,
+                totalValue: `$${currentPortfolio.reduce((sum, t) => sum + t.valueUSD, 0).toFixed(2)}`
             }, 'success');
         }
 
