@@ -13,11 +13,12 @@
 
 - 🌐 **Suporte a 10+ Redes Blockchain** (Ethereum, BSC, Polygon, Arbitrum, etc.)
 - 🔑 **API V2 Unificada** - Uma única chave para todas as redes
+- 💼 **Portfolio Tracker Completo** - Todos os tokens da carteira com valores USD
 - 🪙 **Detecção Automática de Tokens** - Nome, símbolo e saldo automáticos
 - 📊 **Análise de Fluxo Inteligente** - Entradas, saídas e saldo líquido
 - 🔍 **Filtros Avançados** - Por valor, tipo, endereço e período
 - 📈 **Dashboard Completo** - Estatísticas em tempo real
-- 💾 **Exportação CSV** - Download completo dos dados
+- 💾 **Exportação CSV** - Download completo dos dados e portfolio
 - 🎨 **Interface Moderna** - Design glass morphism responsivo
 - 🔧 **Debug em Tempo Real** - Troubleshooting completo
 
@@ -51,10 +52,17 @@
 4. Configure período e filtros
 5. Clique em "Analisar Transações"
 
-### 3. Visualizar Resultados
+### 3. Portfolio Tracker Automático
+- **Portfolio Completo**: Todos os tokens da carteira automaticamente
+- **Valores em USD**: Preços atualizados e valor total do portfolio
+- **Ranking Inteligente**: Tokens ordenados por valor (maior primeiro)
+- **Análise Individual**: Botão "Analisar" para cada token específico
+- **Exportação Portfolio**: Download completo em CSV
+
+### 4. Visualizar Resultados
 - **Dashboard**: Estatísticas gerais e métricas
-- **Análise de Fluxo**: Entradas, saídas e saldo líquido
-- **Tabela Detalhada**: Todas as transações com filtros
+- **Análise de Fluxo**: Entradas, saídas e saldo líquido específico do token
+- **Tabela Detalhada**: Todas as transações com filtros avançados
 - **Informações Completas**: Dados do contrato e carteira
 
 ## 🛠️ Tecnologias Utilizadas

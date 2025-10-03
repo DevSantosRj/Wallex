@@ -5,6 +5,34 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-10-03
+
+### Adicionado - Portfolio Tracker Completo
+- 💼 **Portfolio Tracker Automático** - Análise completa de todos os tokens da carteira
+- 💰 **Saldos em Tempo Real** - Tokens nativos (ETH, BNB, MATIC) e ERC-20/BEP-20
+- 💲 **Valores em USD** - Preços atualizados e valor total do portfolio
+- 📊 **Ranking Inteligente** - Ordenação automática por valor (maior primeiro)
+- 📈 **Dashboard do Portfolio** - Total de tokens, valor USD, maior holding
+- 📋 **Tabela Detalhada** - Quantidade, preço, valor e percentual de cada token
+- 🔍 **Análise Individual** - Botão "Analisar" para cada token específico
+- 📊 **Exportação Portfolio** - Download completo em CSV
+- 🔄 **Integração Automática** - Portfolio carregado durante análise de transações
+
+### Funcionalidades do Portfolio
+- ⚖️ **Cálculo preciso de saldos** baseado no histórico completo de transações
+- 🎨 **Avatares coloridos** para identificação visual de cada token
+- 📊 **Percentual de participação** no portfolio total
+- ⚡ **Ações rápidas** - atualizar, exportar, ordenar por valor
+- 🔧 **Debug detalhado** do processo de carregamento do portfolio
+- 🎯 **Interface consistente** com o design glass morphism existente
+
+### Melhorias Técnicas
+- 🔄 **Funções assíncronas** otimizadas para busca de saldos
+- 🧮 **Algoritmo inteligente** de cálculo de saldos por token
+- 🛡️ **Tratamento robusto** de erros específicos do portfolio
+- ⚡ **Performance otimizada** para carteiras com muitos tokens
+- 🔗 **Integração seamless** com análise de transações existente
+
 ## [2.0.0] - 2025-10-03
 
 ### Adicionado

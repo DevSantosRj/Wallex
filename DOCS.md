@@ -46,6 +46,34 @@ const knownTokens = {
 
 ## Funcionalidades Avançadas
 
+### Portfolio Tracker Automático
+
+O Portfolio Tracker é uma funcionalidade avançada que analisa automaticamente todos os tokens presentes em uma carteira, calculando saldos precisos e valores em USD. O sistema utiliza uma abordagem em múltiplas etapas para garantir dados completos e precisos.
+
+**Processo de Análise do Portfolio**
+
+O sistema primeiro busca o saldo nativo da rede (ETH, BNB, MATIC, etc.) através do endpoint `balance` da API. Em seguida, analisa todas as transações de tokens ERC-20/BEP-20 através do endpoint `tokentx`, agrupando por contrato e calculando o saldo líquido de cada token.
+
+**Cálculo de Saldos**
+```javascript
+function calculateTokenBalance(walletAddress, transactions, decimals) {
+    let balance = 0;
+    transactions.forEach(tx => {
+        const value = parseFloat(tx.value) / Math.pow(10, decimals);
+        if (tx.to.toLowerCase() === walletAddress.toLowerCase()) {
+            balance += value; // Recebido
+        } else if (tx.from.toLowerCase() === walletAddress.toLowerCase()) {
+            balance -= value; // Enviado
+        }
+    });
+    return Math.max(0, balance);
+}
+```
+
+**Integração com Preços USD**
+
+O sistema integra preços em USD para calcular o valor total do portfolio. Atualmente utiliza preços simulados para demonstração, mas a arquitetura suporta integração com APIs de preços reais como CoinGecko ou CoinMarketCap.
+
 ### Sistema de Debug em Tempo Real
 
 O sistema de debug foi projetado para fornecer visibilidade completa sobre o funcionamento interno da aplicação. Cada operação importante gera logs categorizados que são exibidos em tempo real na interface.
