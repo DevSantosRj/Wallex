@@ -1,7 +1,7 @@
 # 🚀 Wallex - Analisador Avançado de Transações Blockchain
 
 ![Wallex Logo](https://img.shields.io/badge/Wallex-PRO-green?style=for-the-badge&logo=ethereum)
-![Version](https://img.shields.io/badge/Version-2.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-2.1.1-blue?style=for-the-badge)
 ![API](https://img.shields.io/badge/API-V2%20Unified-purple?style=for-the-badge)
 ![Networks](https://img.shields.io/badge/Networks-10+-orange?style=for-the-badge)
 
@@ -13,7 +13,7 @@
 
 - 🌐 **Suporte a 10+ Redes Blockchain** (Ethereum, BSC, Polygon, Arbitrum, etc.)
 - 🔑 **API V2 Unificada** - Uma única chave para todas as redes
-- 💼 **Portfolio Tracker Completo** - Todos os tokens da carteira com valores USD
+- 💼 **Portfolio Tracker Completo** ⭐ **NOVO v2.1.1** - Todos os tokens da carteira com valores USD
 - 🪙 **Detecção Automática de Tokens** - Nome, símbolo e saldo automáticos
 - 📊 **Análise de Fluxo Inteligente** - Entradas, saídas e saldo líquido
 - 🔍 **Filtros Avançados** - Por valor, tipo, endereço e período
