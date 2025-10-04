@@ -979,8 +979,8 @@
         function displayDetailedInfo() {
             try {
                 const networkKey = document.getElementById('networkSelector')?.value || 'eth';
-                const walletAddress = document.getElementById('walletInput')?.value?.trim() || '';
-                const tokenAddress = document.getElementById('tokenInput')?.value?.trim() || '';
+                const walletAddress = document.getElementById('walletAddress')?.value?.trim() || '';
+                const tokenAddress = document.getElementById('tokenAddress')?.value?.trim() || '';
                 const startDate = document.getElementById('startDate')?.value || '';
                 const endDate = document.getElementById('endDate')?.value || '';
                 
@@ -1607,7 +1607,7 @@
 
         // Função para buscar portfolio da carteira
         async function fetchWalletPortfolio() {
-            const walletAddress = document.getElementById('walletInput').value.trim();
+            const walletAddress = document.getElementById('walletAddress').value.trim();
             const networkKey = document.getElementById('networkSelector').value;
             
             if (!walletAddress) {
@@ -1930,10 +1930,10 @@
         function analyzeToken(contractAddress) {
             if (contractAddress === 'native') {
                 // Limpar campo de token para analisar moeda nativa
-                document.getElementById('tokenInput').value = '';
+                document.getElementById('tokenAddress').value = '';
             } else {
                 // Preencher campo de token
-                document.getElementById('tokenInput').value = contractAddress;
+                document.getElementById('tokenAddress').value = contractAddress;
             }
             
             // Executar análise
