@@ -141,6 +141,30 @@
             padding: 16px;
             margin: 12px 0;
         }
+        
+        .analysis-mode-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(148, 163, 184, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .analysis-mode-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(148, 163, 184, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .analysis-mode-card.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+        }
+        
+        .analysis-mode-card.active:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.7);
+        }
     </style>
 </head>
 <body class="text-white">
@@ -179,10 +203,41 @@
             </div>
         </header>
 
+        <!-- Seletor de Modo de Análise -->
+        <div class="glass-card rounded-xl p-6 mb-8 fade-in">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4">Escolha o Tipo de Análise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <div id="walletModeCard" class="analysis-mode-card active cursor-pointer p-6 rounded-xl border-2 transition-all duration-300">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Análise de Carteira</h3>
+                            <p class="text-gray-400 text-sm">Analise transações de uma carteira específica com filtros avançados</p>
+                        </div>
+                    </div>
+                    <div id="contractModeCard" class="analysis-mode-card cursor-pointer p-6 rounded-xl border-2 transition-all duration-300">
+                        <div class="text-center">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Análise Global de Token</h3>
+                            <p class="text-gray-400 text-sm">Analise todas as transações de um contrato de token e volume total</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Painel de Configuração -->
         <div class="glass-card rounded-xl p-6 mb-8 fade-in">
             <div class="flex items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-200">Configuração da Análise</h2>
+                <h2 id="configTitle" class="text-2xl font-semibold text-gray-200">Configuração da Análise de Carteira</h2>
                 <div class="ml-auto">
                     <span class="text-sm text-green-400 bg-green-900/20 px-3 py-1 rounded-full border border-green-500/30">
                         ✨ API Integrada - Sem configuração necessária
@@ -190,50 +245,132 @@
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                    <label for="networkSelector" class="block text-lg font-medium text-gray-300 mb-4">
-                        Selecione a Rede Blockchain
-                        <span class="text-red-400">*</span>
-                    </label>
-                    <select id="networkSelector" class="form-select w-full rounded-lg shadow-lg p-4 text-lg" required>
-                        <option value="eth" data-chainid="1">🔷 Ethereum (ETH)</option>
-                        <option value="bsc" data-chainid="56">🟡 BNB Smart Chain (BNB)</option>
-                        <option value="polygon" data-chainid="137">🟣 Polygon (MATIC)</option>
-                        <option value="arbitrum" data-chainid="42161">🔵 Arbitrum One (ETH)</option>
-                        <option value="optimism" data-chainid="10">🔴 Optimism (ETH)</option>
-                        <option value="avalanche" data-chainid="43114">🔺 Avalanche C-Chain (AVAX)</option>
-                        <option value="base" data-chainid="8453">🔵 Base (ETH)</option>
-                        <option value="blast" data-chainid="81457">💥 Blast (ETH)</option>
-                        <option value="scroll" data-chainid="534352">📜 Scroll (ETH)</option>
-                        <option value="zksync" data-chainid="324">⚡ zkSync Era (ETH)</option>
-                        <option value="linea" data-chainid="59144">🔗 Linea (ETH)</option>
-                        <option value="mantle" data-chainid="5000">🧥 Mantle (MNT)</option>
-                    </select>
-                    <div class="mt-2 text-sm text-blue-400">
-                        🔐 <strong>Seguro:</strong> API key integrada no backend para máxima segurança
+            <!-- Configuração para Análise de Carteira -->
+            <div id="walletAnalysisConfig">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <label for="networkSelector" class="block text-lg font-medium text-gray-300 mb-4">
+                            Selecione a Rede Blockchain
+                            <span class="text-red-400">*</span>
+                        </label>
+                        <select id="networkSelector" class="form-select w-full rounded-lg shadow-lg p-4 text-lg" required>
+                            <option value="eth" data-chainid="1">🔷 Ethereum (ETH)</option>
+                            <option value="bsc" data-chainid="56">🟡 BNB Smart Chain (BNB)</option>
+                            <option value="polygon" data-chainid="137">🟣 Polygon (MATIC)</option>
+                            <option value="arbitrum" data-chainid="42161">🔵 Arbitrum One (ETH)</option>
+                            <option value="optimism" data-chainid="10">🔴 Optimism (ETH)</option>
+                            <option value="avalanche" data-chainid="43114">🔺 Avalanche C-Chain (AVAX)</option>
+                            <option value="base" data-chainid="8453">🔵 Base (ETH)</option>
+                            <option value="blast" data-chainid="81457">💥 Blast (ETH)</option>
+                            <option value="scroll" data-chainid="534352">📜 Scroll (ETH)</option>
+                            <option value="zksync" data-chainid="324">⚡ zkSync Era (ETH)</option>
+                            <option value="linea" data-chainid="59144">🔗 Linea (ETH)</option>
+                            <option value="mantle" data-chainid="5000">🧥 Mantle (MNT)</option>
+                        </select>
+                        <div class="mt-2 text-sm text-blue-400">
+                            🔐 <strong>Seguro:</strong> API key integrada no backend para máxima segurança
+                        </div>
+                    </div>
+                    <div>
+                        <label for="walletAddress" class="block text-lg font-medium text-gray-300 mb-4">
+                            Endereço da Carteira (Wallet)
+                            <span class="text-red-400">*</span>
+                        </label>
+                        <input type="text" id="walletAddress" class="form-input w-full rounded-lg shadow-lg p-4 text-lg" placeholder="0x..." required>
+                        <div id="walletValidation" class="mt-2 text-sm hidden"></div>
+                        <div class="mt-2 text-sm text-gray-400">
+                            💡 <strong>Dica:</strong> Cole o endereço da carteira que deseja analisar
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="walletAddress" class="block text-lg font-medium text-gray-300 mb-4">
-                        Endereço da Carteira (Wallet)
-                        <span class="text-red-400">*</span>
+                
+                <div class="mt-8">
+                    <label for="tokenAddress" class="block text-lg font-medium text-gray-300 mb-4">
+                        Endereço do Token (Contrato) - Opcional
                     </label>
-                    <input type="text" id="walletAddress" class="form-input w-full rounded-lg shadow-lg p-4 text-lg" placeholder="0x..." required>
-                    <div id="walletValidation" class="mt-2 text-sm hidden"></div>
-                    <div class="mt-2 text-sm text-gray-400">
-                        💡 <strong>Dica:</strong> Cole o endereço da carteira que deseja analisar
+                    <input type="text" id="tokenAddress" class="form-input w-full rounded-lg shadow-lg p-4 text-lg" placeholder="Deixe em branco para transações da moeda nativa">
+                    <div class="mt-2 text-sm text-green-400">
+                        🪙 <strong>Automático:</strong> Wallex detecta automaticamente nome, símbolo e saldo do token
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-8">
-                <label for="tokenAddress" class="block text-lg font-medium text-gray-300 mb-4">
-                    Endereço do Token (Contrato) - Opcional
-                </label>
-                <input type="text" id="tokenAddress" class="form-input w-full rounded-lg shadow-lg p-4 text-lg" placeholder="Deixe em branco para transações da moeda nativa">
-                <div class="mt-2 text-sm text-green-400">
-                    🪙 <strong>Automático:</strong> Wallex detecta automaticamente nome, símbolo e saldo do token
+
+            <!-- Configuração para Análise Global de Token -->
+            <div id="contractAnalysisConfig" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <label for="contractNetworkSelector" class="block text-lg font-medium text-gray-300 mb-4">
+                            Selecione a Rede Blockchain
+                            <span class="text-red-400">*</span>
+                        </label>
+                        <select id="contractNetworkSelector" class="form-select w-full rounded-lg shadow-lg p-4 text-lg" required>
+                            <option value="eth" data-chainid="1">🔷 Ethereum (ETH)</option>
+                            <option value="bsc" data-chainid="56">🟡 BNB Smart Chain (BNB)</option>
+                            <option value="polygon" data-chainid="137">🟣 Polygon (MATIC)</option>
+                            <option value="arbitrum" data-chainid="42161">🔵 Arbitrum One (ETH)</option>
+                            <option value="optimism" data-chainid="10">🔴 Optimism (ETH)</option>
+                            <option value="avalanche" data-chainid="43114">🔺 Avalanche C-Chain (AVAX)</option>
+                            <option value="base" data-chainid="8453">🔵 Base (ETH)</option>
+                            <option value="blast" data-chainid="81457">💥 Blast (ETH)</option>
+                            <option value="scroll" data-chainid="534352">📜 Scroll (ETH)</option>
+                            <option value="zksync" data-chainid="324">⚡ zkSync Era (ETH)</option>
+                            <option value="linea" data-chainid="59144">🔗 Linea (ETH)</option>
+                            <option value="mantle" data-chainid="5000">🧥 Mantle (MNT)</option>
+                        </select>
+                        <div class="mt-2 text-sm text-blue-400">
+                            🔐 <strong>Seguro:</strong> API key integrada no backend para máxima segurança
+                        </div>
+                    </div>
+                    <div>
+                        <label for="contractAddressInput" class="block text-lg font-medium text-gray-300 mb-4">
+                            Endereço do Contrato do Token
+                            <span class="text-red-400">*</span>
+                        </label>
+                        <input type="text" id="contractAddressInput" class="form-input w-full rounded-lg shadow-lg p-4 text-lg" placeholder="0x..." required>
+                        <div id="contractValidation" class="mt-2 text-sm hidden"></div>
+                        <div class="mt-2 text-sm text-purple-400">
+                            🔍 <strong>Análise Global:</strong> Todas as transações do token serão analisadas
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-purple-900/20 border border-purple-500/30 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Sobre a Análise Global de Token
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <div>
+                                <div class="text-white font-medium">Volume Total de Entrada</div>
+                                <div class="text-gray-400">Soma de todas as transações recebidas pelo contrato</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <div>
+                                <div class="text-white font-medium">Conversão Automática</div>
+                                <div class="text-gray-400">Valores convertidos para USD e moeda nativa</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <div>
+                                <div class="text-white font-medium">Análise Completa</div>
+                                <div class="text-gray-400">Todas as transações do token, não limitado a carteiras</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <div>
+                                <div class="text-white font-medium">Estatísticas Avançadas</div>
+                                <div class="text-gray-400">Holders únicos, volume por período, top transações</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -303,7 +440,7 @@
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Analisar com Wallex
+                    <span id="analyzeBtnText">Analisar com Wallex</span>
                 </button>
             </div>
         </div>
@@ -704,6 +841,8 @@
         let currentTransactions = [];
         let currentTokenInfo = null;
         let debugMode = true;
+        let analysisMode = 'wallet'; // 'wallet' ou 'contract'
+        let globalTokenAnalysis = null;
 
         // Elementos DOM
         const networkSelector = document.getElementById('networkSelector');
@@ -1976,8 +2115,371 @@
             addDebugInfo('📊 Portfolio exportado', { records: currentPortfolio.length }, 'success');
         }
 
+        // Função para alternar modo de análise
+        function switchAnalysisMode(mode) {
+            analysisMode = mode;
+            
+            // Atualizar cards visuais
+            const walletCard = document.getElementById('walletModeCard');
+            const contractCard = document.getElementById('contractModeCard');
+            
+            if (mode === 'wallet') {
+                walletCard.classList.add('active');
+                contractCard.classList.remove('active');
+                
+                // Mostrar configuração de carteira
+                document.getElementById('walletAnalysisConfig').classList.remove('hidden');
+                document.getElementById('contractAnalysisConfig').classList.add('hidden');
+                
+                // Atualizar título e botão
+                document.getElementById('configTitle').textContent = 'Configuração da Análise de Carteira';
+                document.getElementById('analyzeBtnText').textContent = 'Analisar Carteira';
+                
+                addDebugInfo('🔄 Modo alterado para Análise de Carteira', null, 'info');
+            } else {
+                contractCard.classList.add('active');
+                walletCard.classList.remove('active');
+                
+                // Mostrar configuração de contrato
+                document.getElementById('contractAnalysisConfig').classList.remove('hidden');
+                document.getElementById('walletAnalysisConfig').classList.add('hidden');
+                
+                // Atualizar título e botão
+                document.getElementById('configTitle').textContent = 'Configuração da Análise Global de Token';
+                document.getElementById('analyzeBtnText').textContent = 'Analisar Token Globalmente';
+                
+                addDebugInfo('🔄 Modo alterado para Análise Global de Token', null, 'info');
+            }
+        }
+
+        // Função para análise global de token
+        async function analyzeGlobalToken() {
+            const contractAddress = document.getElementById('contractAddressInput').value.trim();
+            const networkKey = document.getElementById('contractNetworkSelector').value;
+            
+            addDebugInfo('🌍 Iniciando análise global de token', {
+                contract: contractAddress.substring(0, 10) + '...',
+                network: CHAIN_CONFIG[networkKey].name,
+                chainId: CHAIN_CONFIG[networkKey].chainId
+            }, 'api');
+
+            // Validações
+            if (!contractAddress) {
+                showStatus('Por favor, insira o endereço do contrato do token.', true);
+                return;
+            }
+            
+            if (!isValidAddress(contractAddress)) {
+                showStatus('Endereço de contrato inválido. Deve ter 42 caracteres e começar com 0x.', true);
+                return;
+            }
+
+            hideStatus();
+            toggleLoading(true);
+            
+            try {
+                // Buscar informações do token primeiro
+                addDebugInfo('🔍 Obtendo informações do token...', null, 'info');
+                await getGlobalTokenInfo(networkKey, contractAddress);
+                
+                // Buscar TODAS as transações do token (sem filtro de carteira)
+                addDebugInfo('📊 Buscando todas as transações do token...', null, 'info');
+                const allTransactions = await fetchAllTokenTransactions(networkKey, contractAddress);
+                
+                if (allTransactions.length === 0) {
+                    showStatus('Nenhuma transação encontrada para este token.', false);
+                    return;
+                }
+                
+                // Processar análise global
+                addDebugInfo('⚡ Processando análise global...', { totalTx: allTransactions.length }, 'data');
+                const globalAnalysis = processGlobalTokenAnalysis(allTransactions, contractAddress);
+                
+                // Exibir resultados
+                displayGlobalTokenResults(globalAnalysis);
+                showResults();
+                
+                showStatus(`✅ Análise global concluída! Processadas ${allTransactions.length} transações do token ${currentTokenInfo?.symbol || 'desconhecido'}.`);
+                
+            } catch (error) {
+                addDebugInfo('💥 Erro durante análise global', { 
+                    error: error.message,
+                    stack: error.stack
+                }, 'error');
+                console.error('Erro:', error);
+                showStatus(`Erro ao analisar token: ${error.message}`, true);
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        // Função para buscar informações do token para análise global
+        async function getGlobalTokenInfo(chainKey, tokenAddress) {
+            try {
+                // Usar o mesmo método da análise de carteira, mas sem carteira específica
+                const url = buildApiUrl(chainKey, 'token', 'tokeninfo', {
+                    contractaddress: tokenAddress
+                });
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === '1' && data.result && data.result.length > 0) {
+                    const tokenInfo = data.result[0];
+                    currentTokenInfo = {
+                        name: tokenInfo.tokenName || 'Token Desconhecido',
+                        symbol: tokenInfo.symbol || 'UNKNOWN',
+                        decimals: parseInt(tokenInfo.divisor) || 18,
+                        contractAddress: tokenAddress,
+                        totalSupply: tokenInfo.totalSupply || '0'
+                    };
+                    
+                    addDebugInfo('✅ Informações do token obtidas', currentTokenInfo, 'token');
+                } else {
+                    // Fallback: tentar obter via transações
+                    addDebugInfo('🔄 Tentando obter info via transações...', null, 'token');
+                    const txUrl = buildApiUrl(chainKey, 'account', 'tokentx', {
+                        contractaddress: tokenAddress,
+                        page: 1,
+                        offset: 1,
+                        sort: 'desc'
+                    });
+                    
+                    const txResponse = await fetch(txUrl);
+                    const txData = await txResponse.json();
+                    
+                    if (txData.status === '1' && txData.result && txData.result.length > 0) {
+                        const firstTx = txData.result[0];
+                        currentTokenInfo = {
+                            name: firstTx.tokenName || 'Token Desconhecido',
+                            symbol: firstTx.tokenSymbol || 'UNKNOWN',
+                            decimals: parseInt(firstTx.tokenDecimal) || 18,
+                            contractAddress: tokenAddress,
+                            totalSupply: '0'
+                        };
+                        
+                        addDebugInfo('✅ Info obtida via transações', currentTokenInfo, 'token');
+                    } else {
+                        // Fallback final
+                        currentTokenInfo = {
+                            name: 'Token Desconhecido',
+                            symbol: 'TOKEN',
+                            decimals: 18,
+                            contractAddress: tokenAddress,
+                            totalSupply: '0'
+                        };
+                        
+                        addDebugInfo('⚠️ Usando informações padrão', currentTokenInfo, 'warning');
+                    }
+                }
+            } catch (error) {
+                addDebugInfo('❌ Erro ao obter informações do token', { error: error.message }, 'error');
+                throw error;
+            }
+        }
+
+        // Função para buscar TODAS as transações de um token
+        async function fetchAllTokenTransactions(chainKey, contractAddress) {
+            const allTransactions = [];
+            let page = 1;
+            const maxPages = 10; // Limitar para evitar sobrecarga
+            
+            try {
+                while (page <= maxPages) {
+                    addDebugInfo(`📄 Buscando página ${page} de transações...`, null, 'api');
+                    
+                    const url = buildApiUrl(chainKey, 'account', 'tokentx', {
+                        contractaddress: contractAddress,
+                        startblock: 0,
+                        endblock: 99999999,
+                        page: page,
+                        offset: 1000,
+                        sort: 'desc'
+                    });
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.status === '1' && data.result && data.result.length > 0) {
+                        allTransactions.push(...data.result);
+                        addDebugInfo(`✅ Página ${page}: ${data.result.length} transações`, null, 'data');
+                        
+                        // Se retornou menos que 1000, é a última página
+                        if (data.result.length < 1000) {
+                            break;
+                        }
+                        page++;
+                    } else {
+                        addDebugInfo(`⚠️ Página ${page}: sem dados`, { message: data.message }, 'warning');
+                        break;
+                    }
+                    
+                    // Pequena pausa para não sobrecarregar a API
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                addDebugInfo('📊 Coleta de transações concluída', { 
+                    totalTransactions: allTransactions.length,
+                    pagesProcessed: page - 1
+                }, 'success');
+                
+                return allTransactions;
+                
+            } catch (error) {
+                addDebugInfo('❌ Erro ao buscar transações', { error: error.message }, 'error');
+                throw error;
+            }
+        }
+
+        // Função para processar análise global do token
+        function processGlobalTokenAnalysis(transactions, contractAddress) {
+            addDebugInfo('⚙️ Processando análise global...', { count: transactions.length }, 'data');
+            
+            const analysis = {
+                totalTransactions: transactions.length,
+                totalVolumeIn: 0,
+                totalVolumeOut: 0,
+                uniqueHolders: new Set(),
+                uniqueSenders: new Set(),
+                largestTransaction: null,
+                firstTransaction: null,
+                lastTransaction: null,
+                dailyVolume: {},
+                topHolders: {},
+                transactionsByDay: {}
+            };
+            
+            const decimals = currentTokenInfo?.decimals || 18;
+            let maxValue = 0;
+            
+            transactions.forEach(tx => {
+                const value = parseFloat(tx.value) / Math.pow(10, decimals);
+                const date = new Date(parseInt(tx.timeStamp) * 1000);
+                const dateKey = date.toISOString().split('T')[0];
+                
+                // Volume total
+                analysis.totalVolumeIn += value;
+                
+                // Holders únicos
+                analysis.uniqueHolders.add(tx.to.toLowerCase());
+                analysis.uniqueSenders.add(tx.from.toLowerCase());
+                
+                // Maior transação
+                if (value > maxValue) {
+                    maxValue = value;
+                    analysis.largestTransaction = { ...tx, formattedValue: value };
+                }
+                
+                // Primeira e última transação
+                if (!analysis.firstTransaction || parseInt(tx.timeStamp) < parseInt(analysis.firstTransaction.timeStamp)) {
+                    analysis.firstTransaction = tx;
+                }
+                if (!analysis.lastTransaction || parseInt(tx.timeStamp) > parseInt(analysis.lastTransaction.timeStamp)) {
+                    analysis.lastTransaction = tx;
+                }
+                
+                // Volume por dia
+                if (!analysis.dailyVolume[dateKey]) {
+                    analysis.dailyVolume[dateKey] = 0;
+                    analysis.transactionsByDay[dateKey] = 0;
+                }
+                analysis.dailyVolume[dateKey] += value;
+                analysis.transactionsByDay[dateKey]++;
+                
+                // Top holders (aproximado)
+                if (!analysis.topHolders[tx.to.toLowerCase()]) {
+                    analysis.topHolders[tx.to.toLowerCase()] = 0;
+                }
+                analysis.topHolders[tx.to.toLowerCase()] += value;
+            });
+            
+            // Converter sets para arrays e contar
+            analysis.uniqueHoldersCount = analysis.uniqueHolders.size;
+            analysis.uniqueSendersCount = analysis.uniqueSenders.size;
+            
+            // Ordenar top holders
+            analysis.topHoldersArray = Object.entries(analysis.topHolders)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 10)
+                .map(([address, volume]) => ({ address, volume }));
+            
+            addDebugInfo('✅ Análise global processada', {
+                totalVolume: analysis.totalVolumeIn.toFixed(6),
+                uniqueHolders: analysis.uniqueHoldersCount,
+                largestTx: maxValue.toFixed(6)
+            }, 'success');
+            
+            globalTokenAnalysis = analysis;
+            return analysis;
+        }
+
+        // Função para exibir resultados da análise global
+        function displayGlobalTokenResults(analysis) {
+            // Atualizar cards de resumo com dados globais
+            document.getElementById('totalTx').textContent = analysis.totalTransactions;
+            document.getElementById('totalVolume').textContent = `${analysis.totalVolumeIn.toFixed(6)} ${currentTokenInfo?.symbol || 'TOKEN'}`;
+            document.getElementById('avgValue').textContent = `${(analysis.totalVolumeIn / analysis.totalTransactions).toFixed(6)} ${currentTokenInfo?.symbol || 'TOKEN'}`;
+            
+            if (analysis.lastTransaction) {
+                const lastTxTime = new Date(parseInt(analysis.lastTransaction.timeStamp) * 1000);
+                document.getElementById('lastTx').textContent = getTimeAgo(lastTxTime);
+            }
+            
+            // Atualizar análise de fluxo para dados globais
+            const tokenName = currentTokenInfo?.name || 'Token Desconhecido';
+            const symbol = currentTokenInfo?.symbol || 'TOKEN';
+            
+            document.getElementById('flowAnalysisTitle').innerHTML = `
+                <svg class="w-8 h-8 text-purple-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Análise Global - ${tokenName} (${symbol})
+                <span class="text-sm text-gray-400 ml-2">Todas as Transações</span>
+            `;
+            
+            document.getElementById('incomingTitle').textContent = `${symbol} - Volume Total Global`;
+            document.getElementById('outgoingTitle').textContent = `${symbol} - Holders Únicos`;
+            document.getElementById('netBalanceTitle').textContent = `${symbol} - Maior Transação`;
+            
+            // Dados globais
+            document.getElementById('incomingCount').textContent = analysis.totalTransactions;
+            document.getElementById('incomingVolume').textContent = `${analysis.totalVolumeIn.toFixed(6)} ${symbol}`;
+            document.getElementById('outgoingCount').textContent = analysis.uniqueHoldersCount;
+            document.getElementById('outgoingVolume').textContent = `${analysis.uniqueSendersCount} remetentes únicos`;
+            
+            const netBalanceElement = document.getElementById('netBalance');
+            if (analysis.largestTransaction) {
+                netBalanceElement.textContent = `${analysis.largestTransaction.formattedValue.toFixed(6)} ${symbol}`;
+                netBalanceElement.className = 'text-3xl font-bold text-purple-400';
+            }
+            
+            // Renderizar tabela com transações mais recentes
+            // Usar as transações originais que foram processadas
+            const allTx = globalTokenAnalysis ? Object.values(globalTokenAnalysis) : [];
+            currentTransactions = allTx.length > 50 ? allTx.slice(0, 50) : allTx;
+            
+            addDebugInfo('📊 Resultados globais exibidos', {
+                displayedTransactions: Math.min(50, analysis.totalTransactions)
+            }, 'success');
+        }
+
+        // Event Listeners para Modo de Análise
+        document.getElementById('walletModeCard').addEventListener('click', function() {
+            switchAnalysisMode('wallet');
+        });
+
+        document.getElementById('contractModeCard').addEventListener('click', function() {
+            switchAnalysisMode('contract');
+        });
+
         // Event Listeners
-        analyzeBtn.addEventListener('click', analyzeTransactions);
+        analyzeBtn.addEventListener('click', function() {
+            if (analysisMode === 'wallet') {
+                analyzeTransactions();
+            } else {
+                analyzeGlobalToken();
+            }
+        });
         document.getElementById('exportBtn').addEventListener('click', exportToCSV);
 
         // Event Listeners para Ações Rápidas
